@@ -26,7 +26,10 @@ fn main() {
         // instead of crashing program when `guess` is non-number, continue
         let guess: u32 = match guess.trim().parse() {
             Ok(num) => num,
-            Err(_) => continue,
+            Err(_) => {
+                println!("Please type a number");
+                continue;
+            }
         };
             
         println!("You guessed: {guess}");
