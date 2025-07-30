@@ -1,0 +1,7 @@
+{
+  "rust-analyzer.linkedProjects": [
+    "./01-getting_started/02-hello_cargo/Cargo.toml",
+    "./02-guessing_game/Cargo.toml",
+    "./00-programming_rust_book/01-gcd/Cargo.toml"
+  ]
+}
