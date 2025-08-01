@@ -2,7 +2,11 @@
   "rust-analyzer.linkedProjects": [
     // The Rust Book examples:
     "./01-getting_started/02-hello_cargo/Cargo.toml",
-    "./02-guessing_game/Cargo.toml"
+    "./02-guessing_game/Cargo.toml",
+    // The Rust Book projects:
+    "./projects/03/convert_temp/Cargo.toml",
+    "./projects/03/fibonacci/Cargo.toml",
+    "./projects/03/carol_lyrics/Cargo.toml"
     // Programming Rust examples:
     // "./00-programming_rust_book/01-gcd/Cargo.toml",
     // "./00-programming_rust_book/02-gcd/Cargo.toml",
