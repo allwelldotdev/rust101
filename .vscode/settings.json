@@ -9,7 +9,8 @@
     "./projects/03/carol_lyrics/Cargo.toml",
     "./projects/05/rectangles/Cargo.toml",
     "./projects/09/recoverable_errors_result/Cargo.toml",
-    "./projects/11/adder/Cargo.toml"
+    "./projects/11/adder/Cargo.toml",
+    "./projects/12-io_project/minigrep/Cargo.toml"
     // Programming Rust examples:
     // "./00-programming_rust_book/01-gcd/Cargo.toml",
     // "./00-programming_rust_book/02-gcd/Cargo.toml",
