@@ -2,11 +2,10 @@ use minigrep::Config;
 use std::{env, process};
 
 fn main() {
-    // Read cli arguments ...
-    let args = env::args().skip(1).collect::<Vec<_>>();
-    // dbg!(args);
+    // Read cli arguments as an iterator
+    // instead of collecting into `Vec<String>` ...
 
-    let config = Config::build(&args).unwrap_or_else(|err| {
+    let config = Config::build(env::args().skip(1)).unwrap_or_else(|err| {
         eprintln!("Problem parsing arguments: {err}");
         process::exit(1);
     });
