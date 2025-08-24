@@ -14,7 +14,8 @@
     "./projects/13/closures/Cargo.toml",
     "./projects/13/iterators/Cargo.toml",
     "./projects/15/deref_drop/Cargo.toml",
-    "./projects/15/rc_refcell_weak/Cargo.toml"
+    "./projects/15/rc_refcell_weak/Cargo.toml",
+    "./projects/16/fearless_concurrency/Cargo.toml"
     // Programming Rust examples:
     // "./00-programming_rust_book/01-gcd/Cargo.toml",
     // "./00-programming_rust_book/02-gcd/Cargo.toml",
