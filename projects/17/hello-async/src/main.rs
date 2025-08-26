@@ -1,5 +1,8 @@
 #[allow(unused)]
-use std::time::Duration;
+use std::{
+    pin::{Pin, pin},
+    time::{Duration, Instant},
+};
 
 #[allow(unused)]
 use trpl::{Either, Html};
@@ -165,45 +168,157 @@ fn main() {
 
         // --------------------------
 
-        // Using multiple producers with async blocks
-        let (tx, mut rx) = trpl::channel();
+        // // Using multiple producers with async blocks
+        // let (tx, mut rx) = trpl::channel();
 
-        let tx1 = tx.clone();
-        let tx1_fut = async move {
-            let vals = vec![
-                String::from("hi"),
-                String::from("from"),
-                String::from("the"),
-                String::from("future"),
-            ];
+        // let tx1 = tx.clone();
+        // let tx1_fut = async move {
+        //     let vals = vec![
+        //         String::from("hi"),
+        //         String::from("from"),
+        //         String::from("the"),
+        //         String::from("future"),
+        //     ];
 
-            for val in vals {
-                tx1.send(val).unwrap();
-                trpl::sleep(Duration::from_millis(500)).await;
-            }
+        //     for val in vals {
+        //         tx1.send(val).unwrap();
+        //         trpl::sleep(Duration::from_millis(500)).await;
+        //     }
+        // };
+
+        // let rx_fut = async {
+        //     while let Some(value) = rx.recv().await {
+        //         println!("received: '{value}'");
+        //     }
+        // };
+
+        // let tx_fut = async move {
+        //     let vals = vec![
+        //         String::from("more"),
+        //         String::from("messages"),
+        //         String::from("for"),
+        //         String::from("you"),
+        //     ];
+
+        //     for val in vals {
+        //         tx.send(val).unwrap();
+        //         trpl::sleep(Duration::from_millis(1500)).await;
+        //     }
+        // };
+
+        // // The key is in the order the futures are awaited, not created.
+        // trpl::join3(tx1_fut, tx_fut, rx_fut).await;
+
+        // --------------
+
+        // // Using multiple producers with async blocks; with the `futures::join_all()` function
+        // // Uncovering the `Unpin` trait and using dynamic dispatching with `Vec<Pin<&mut dyn Future<Output = ()>>>`
+        // let (tx, mut rx) = trpl::channel();
+
+        // let tx1 = tx.clone();
+        // let tx1_fut = pin!(async move {
+        //     let vals = vec![
+        //         String::from("hi"),
+        //         String::from("from"),
+        //         String::from("the"),
+        //         String::from("future"),
+        //     ];
+
+        //     for val in vals {
+        //         tx1.send(val).unwrap();
+        //         trpl::sleep(Duration::from_millis(500)).await;
+        //     }
+        // });
+
+        // let rx_fut = pin!(async {
+        //     while let Some(value) = rx.recv().await {
+        //         println!("received: '{value}'");
+        //     }
+        // });
+
+        // let tx_fut = pin!(async move {
+        //     let vals = vec![
+        //         String::from("more"),
+        //         String::from("messages"),
+        //         String::from("for"),
+        //         String::from("you"),
+        //     ];
+
+        //     for val in vals {
+        //         tx.send(val).unwrap();
+        //         trpl::sleep(Duration::from_millis(1500)).await;
+        //     }
+        // });
+
+        // // No need for `Box::pin()` because we don't need to store futures in the heap because we don't need them elsewhere outside this scope.
+        // // Therefore, better to use `pin!()` macro.
+        // // let futures: Vec<Pin<Box<dyn Future<Output = ()>>>> =
+        // //     vec![Box::pin(tx1_fut), Box::pin(tx_fut), Box::pin(rx_fut)];
+        // // How to enunciate `Vec<Pin<&mut dyn Future<Output = ()>>>`?
+        // // Say, `futures` is a `Vec` containing pinned mutable references to the dynamic future type, whose output is a unit type.
+        // let futures: Vec<Pin<&mut dyn Future<Output = ()>>> = vec![tx1_fut, tx_fut, rx_fut];
+
+        // // Difference between `futures::join_all()` and other `join` methods and `join!()` macro:
+        // // `futures::join_all()`: accepts a vector (growable collection) of futures + futures with similar return types. Has some quirks, uses `Unpin` trait.
+        // // Others: accept a particular (determined, ungrowable) number of futures + futures with different return types.
+        // trpl::join_all(futures).await;
+
+        // ----------------
+
+        // // Yielding back control to the runtime.
+        // // The code below shows that async can be useful even for compute-bound tasks.
+        // // A form of cooperative multitasking, where each future has the power to determine when it hands over control via await points.
+        // // Each future therefore also has the responsibility to avoid blocking for too long!
+        // // In some Rust-based embedded operating systems, this is the only kind of multitasking!
+        // let one_ns = Duration::from_nanos(1);
+        // let start = Instant::now();
+        // async {
+        //     for _ in 1..1000 {
+        //         trpl::sleep(one_ns).await;
+        //     }
+        // }
+        // .await;
+        // let time = Instant::now() - start;
+        // println!(
+        //     "'sleep' version finished after {} seconds.",
+        //     time.as_secs_f32()
+        // );
+
+        // let start = Instant::now();
+        // async {
+        //     for _ in 1..1000 {
+        //         trpl::yield_now().await;
+        //     }
+        // }
+        // .await;
+        // let time = Instant::now() - start;
+        // println!(
+        //     "'yield' version finished after {} seconds.",
+        //     time.as_secs_f32()
+        // );
+
+        // ------------
+
+        // Building our own abstractions
+        // building a timeout function with the async building blocks we've already implemented
+        let slow = async {
+            trpl::sleep(Duration::from_secs(5)).await;
+            "Finally finished!"
         };
 
-        let rx_fut = async {
-            while let Some(value) = rx.recv().await {
-                println!("received: '{value}'");
-            }
-        };
-
-        let tx_fut = async move {
-            let vals = vec![
-                String::from("more"),
-                String::from("messages"),
-                String::from("for"),
-                String::from("you"),
-            ];
-
-            for val in vals {
-                tx.send(val).unwrap();
-                trpl::sleep(Duration::from_millis(1500)).await;
-            }
-        };
-
-        // The key is in the order the futures are awaited, not created.
-        trpl::join3(tx1_fut, tx_fut, rx_fut).await;
+        match timeout(slow, Duration::from_secs(2)).await {
+            Ok(message) => println!("Succeeded with '{message}'"),
+            Err(duration) => println!("Timeout after {} seconds", duration.as_secs()),
+        }
     })
+}
+
+// Building our own abstractions
+// building a timeout function with the async building blocks we've already implemented
+#[allow(unused)]
+async fn timeout<F: Future>(future_to_try: F, max_time: Duration) -> Result<F::Output, Duration> {
+    match trpl::race(future_to_try, trpl::sleep(max_time)).await {
+        Either::Left(output) => Ok(output),
+        Either::Right(_) => Err(max_time),
+    }
 }
