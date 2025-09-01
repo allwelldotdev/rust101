@@ -16,7 +16,8 @@
     "./projects/15/deref_drop/Cargo.toml",
     "./projects/15/rc_refcell_weak/Cargo.toml",
     "./projects/16/fearless_concurrency/Cargo.toml",
-    "./projects/17/hello-async/Cargo.toml"
+    "./projects/17/hello-async/Cargo.toml",
+    "./projects/18/oop-blog/Cargo.toml"
     // Programming Rust examples:
     // "./00-programming_rust_book/01-gcd/Cargo.toml",
     // "./00-programming_rust_book/02-gcd/Cargo.toml",
