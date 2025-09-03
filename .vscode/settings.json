@@ -18,7 +18,8 @@
     "./projects/16/fearless_concurrency/Cargo.toml",
     "./projects/17/hello-async/Cargo.toml",
     "./projects/18/oop-blog/Cargo.toml",
-    "./projects/19/patterns/Cargo.toml"
+    "./projects/19/patterns/Cargo.toml",
+    "./projects/20/unsafe_rust/Cargo.toml"
     // Programming Rust examples:
     // "./00-programming_rust_book/01-gcd/Cargo.toml",
     // "./00-programming_rust_book/02-gcd/Cargo.toml",
