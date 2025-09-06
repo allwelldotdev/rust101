@@ -20,7 +20,10 @@
     "./projects/18/oop-blog/Cargo.toml",
     "./projects/19/patterns/Cargo.toml",
     "./projects/20/unsafe_rust/Cargo.toml",
-    "./projects/20/advanced_functions_closures/Cargo.toml"
+    "./projects/20/advanced_functions_closures/Cargo.toml",
+    "./projects/20/macros/hello_macro/Cargo.toml",
+    "./projects/20/macros/hello_macro/hello_macro_derive/Cargo.toml",
+    "./projects/20/macros/pancakes/Cargo.toml"
     // Programming Rust examples:
     // "./00-programming_rust_book/01-gcd/Cargo.toml",
     // "./00-programming_rust_book/02-gcd/Cargo.toml",
