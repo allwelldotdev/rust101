@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text x=%2250%25%22 y=%2250%25%22 style=%22dominant-baseline:central; text-anchor:middle; font-size:80px;%22>🦀</text></svg>"
+      type="image/svg+xml"
+    />
+    <title>Hi from Rust!</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
+        background: linear-gradient(135deg, #1e1e1e 0%, #2d2d2d 100%);
+        color: #e0e0e0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .container {
+        background: rgba(30, 30, 30, 0.8);
+        border: 2px solid #ce422b;
+        border-radius: 12px;
+        padding: 40px;
+        max-width: 600px;
+        text-align: center;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 20px 40px rgba(206, 66, 43, 0.1);
+        animation: fadeInUp 0.8s ease-out;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .rust-logo {
+        font-size: 3rem;
+        color: #ce422b;
+        margin-bottom: 20px;
+        text-shadow: 0 0 20px rgba(206, 66, 43, 0.3);
+      }
+
+      h1 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+        color: #ce422b;
+        font-weight: bold;
+      }
+
+      .subtitle,
+      .intro-text {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin-bottom: 30px;
+        color: #b0b0b0;
+      }
+
+      .intro-text {
+        margin-bottom: 10px;
+      }
+
+      .intro-text a,
+      .subtitle a {
+        color: inherit;
+      }
+
+      .book-reference {
+        background: rgba(206, 66, 43, 0.1);
+        border-left: 4px solid #ce422b;
+        padding: 15px 20px;
+        margin: 20px 0;
+        text-align: left;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .book-title a {
+        font-weight: bold;
+        color: #ce422b;
+        font-size: 1.1rem;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .keywords {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 30px;
+        flex-wrap: wrap;
+      }
+
+      .keyword {
+        background: linear-gradient(45deg, #ce422b, #a0351f);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        box-shadow: 0 4px 8px rgba(206, 66, 43, 0.3);
+        transition: transform 0.2s ease;
+      }
+
+      .keyword:hover {
+        transform: translateY(-2px);
+      }
+
+      .ferris {
+        font-size: 2rem;
+        margin: 20px 0;
+        animation: wave 2s ease-in-out infinite;
+      }
+
+      @keyframes wave {
+        0%,
+        100% {
+          transform: rotate(0deg);
+        }
+        25% {
+          transform: rotate(-10deg);
+        }
+        75% {
+          transform: rotate(10deg);
+        }
+      }
+
+      @media (max-width: 600px) {
+        .container {
+          padding: 30px 20px;
+        }
+
+        h1 {
+          font-size: 2rem;
+        }
+
+        .keywords {
+          gap: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="rust-logo">🦀</div>
+      <p class="intro-text">
+        <a href="https://github.com/allwelldotdev" target="blank">Allwell</a>
+        saying,
+      </p>
+      <h1>"Hi from Rust!"</h1>
+      <p class="subtitle">
+        Just
+        <a href="https://github.com/allwelldotdev/rust101" target="blank"
+          >finished reading</a
+        >
+        <strong>The Rust Book</strong> and I'm excited to start building
+        reliable, critical, and highly performant solutions with Rust!
+      </p>
+
+      <div class="book-reference">
+        <div class="book-title">
+          <a href="https://doc.rust-lang.org/book/"
+            >📚 The Rust Programming Language</a
+          >
+        </div>
+        <div>By the Rust Foundation</div>
+      </div>
+
+      <div class="keywords">
+        <span class="keyword">Memory Safe, Low Level Programming</span>
+        <span class="keyword">Zero Cost Absractions</span>
+        <span class="keyword">Fearless Concurrency</span>
+        <span class="keyword">Static Typing</span>
+        <span class="keyword">Friendly Compiler :)</span>
+      </div>
+
+      <div class="ferris">🦀</div>
+    </div>
+  </body>
+</html>

@@ -24,7 +24,8 @@
     "./projects/20/macros/hello_macro/Cargo.toml",
     "./projects/20/macros/hello_macro/hello_macro_derive/Cargo.toml",
     "./projects/20/macros/pancakes/Cargo.toml",
-    "./projects/20/macros/little_book/mbe/fib_recurrence/Cargo.toml"
+    "./projects/20/macros/little_book/mbe/fib_recurrence/Cargo.toml",
+    "./projects/21/multithreaded_web_server/hello/Cargo.toml"
     // Programming Rust examples:
     // "./00-programming_rust_book/01-gcd/Cargo.toml",
     // "./00-programming_rust_book/02-gcd/Cargo.toml",
