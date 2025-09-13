@@ -5,10 +5,10 @@ use std::{
     thread,
 };
 
-#[allow(unused)]
+// #[allow(unused)]
 pub struct ThreadPool {
     workers: Vec<Worker>,
-    sender: mpsc::Sender<Job>,
+    sender: Option<mpsc::Sender<Job>>,
 }
 
 type Job = Box<dyn FnOnce() + Send + 'static>;
@@ -26,6 +26,7 @@ impl ThreadPool {
         assert!(size < 129, "size must be less than or equal to 128");
 
         let (sender, receiver) = mpsc::channel();
+        let sender = Some(sender);
         let receiver = Arc::new(Mutex::new(receiver));
 
         let mut workers = Vec::with_capacity(size);
@@ -44,11 +45,15 @@ impl ThreadPool {
         F: FnOnce() + Send + 'static,
     {
         let job = Box::new(f);
-        self.sender.send(job).unwrap();
+        self.sender
+            .as_ref()
+            .expect("Sender is dropped")
+            .send(job)
+            .unwrap();
     }
 }
 
-#[allow(unused)]
+// #[allow(unused)]
 struct Worker {
     id: usize,
     thread: thread::JoinHandle<()>,
@@ -58,17 +63,48 @@ impl Worker {
     fn new(id: usize, receiver: Arc<Mutex<mpsc::Receiver<Job>>>) -> Self {
         let thread = thread::spawn(move || {
             loop {
-                // It truly is fantastic what happens here with the `Mutex<T>` type.
-                // The call to `.lock()` blocks the thread until the lock is acquired;
-                // when the former thread unlocks (or releases the lock).
-                // Then, the thread that has acquired the lock will block again on the
-                // call to `.recv()` until the thread receives the closure from the sender
-                // via the `Threadpool::execute()` method.
-                let job = receiver.lock().unwrap().recv().unwrap();
-                println!("Worker {id} got a job; executing.");
-                job();
+                // // It truly is fantastic what happens here with the `Mutex<T>` type.
+                // // The call to `.lock()` blocks the thread until the lock is acquired;
+                // // when the former thread unlocks (or releases the lock).
+                // // Then, the thread that has acquired the lock will block again on the
+                // // call to `.recv()` until the thread receives the closure from the sender
+                // // via the `Threadpool::execute()` method.
+                // let job = receiver.lock().unwrap().recv().unwrap();
+                // println!("Worker {id} got a job; executing.");
+                // job();
+
+                // ---------------
+
+                // Dropping the Sender causes the Receivers to panic with `unwrap()`, here
+                // we handle the `Err` variant of the `Result<T>` of the Receiver.
+                let msg = receiver.lock().unwrap().recv();
+                match msg {
+                    Ok(job) => {
+                        println!("Worker {id} got a job; executing.");
+                        job();
+                    }
+                    Err(_) => {
+                        println!("Worker {id} disconnected; shutting down.");
+                        break;
+                    }
+                }
             }
         });
         Self { id, thread }
+    }
+}
+
+// Implementing graceful shutdown and cleanup of Threadpool and Workers.
+// By implementing the `Drop` trait - Threadpool destructor. Another example of RAII.
+impl Drop for ThreadPool {
+    fn drop(&mut self) {
+        // Drop Sender to stop threads from receiving any more jobs.
+        drop(self.sender.take());
+
+        // Join Worker threads to wait for any currently running operation to finish.
+        for worker in self.workers.drain(..) {
+            println!("Shutting down worker {}", worker.id);
+            worker.thread.join().unwrap();
+        }
     }
 }

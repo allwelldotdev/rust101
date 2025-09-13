@@ -28,12 +28,16 @@ fn main() {
     // Creating a finite number of threads: using a thread pool
     let pool = ThreadPool::new(4);
 
-    for stream in listener.incoming() {
+    // Using the `take()` method to force the web server to only accept `n` number of
+    // of requests after setting up graceful shutdown and cleanup.
+    for stream in listener.incoming().take(50) {
         let stream = stream.unwrap();
         pool.execute(|| {
             handle_connection(stream);
         })
     }
+
+    println!("Shutting down.");
 }
 
 fn handle_connection(mut stream: TcpStream) {
